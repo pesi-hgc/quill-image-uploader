@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/extensions
 import LoadingImage from './blots/image.js';
+import ImageLink from './blots/imageLink.js';
 
 import './quill.imageUploader.css';
 
@@ -129,8 +130,8 @@ class ImageUploader {
     }
 
     this.options.upload(file).then(
-      (imageUrl) => {
-        this.insertToEditor(imageUrl);
+      (imageInfo) => {
+        this.insertToEditor(imageInfo.imageUrl, imageInfo.imageId, imageInfo.imageKey);
       },
       (error) => {
         isUploadReject = true;
@@ -156,12 +157,16 @@ class ImageUploader {
     );
   }
 
-  insertToEditor(url) {
+  insertToEditor(url, imageId, imageKey) {
     const { range } = this;
     // Delete the placeholder image
     this.quill.deleteText(range.index, 3, 'user');
     // Insert the server saved image
-    this.quill.insertEmbed(range.index, 'image', `${url}`, 'user');
+    this.quill.insertEmbed(range.index, ImageLink.blotName, {
+      src: `${url}`, // any url
+      imageId: `${imageId}`,
+      imageKey: `${imageKey}`,
+    }, 'user');
 
     // eslint-disable-next-line no-plusplus
     range.index++;
