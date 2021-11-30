@@ -130,8 +130,8 @@ class ImageUploader {
     }
 
     this.options.upload(file).then(
-      (imageInfo) => {
-        this.insertToEditor(imageInfo.imageUrl, imageInfo.imageId, imageInfo.imageKey);
+      (fileInfo) => {
+        this.insertToEditor(fileInfo.url, fileInfo.name);
       },
       (error) => {
         isUploadReject = true;
@@ -157,15 +157,14 @@ class ImageUploader {
     );
   }
 
-  insertToEditor(url, imageId, imageKey) {
+  insertToEditor(url, name) {
     const { range } = this;
     // Delete the placeholder image
     this.quill.deleteText(range.index, 3, 'user');
     // Insert the server saved image
     this.quill.insertEmbed(range.index, ImageLink.blotName, {
       src: `${url}`, // any url
-      imageId: `${imageId}`,
-      imageKey: `${imageKey}`,
+      name: `${name}`
     }, 'user');
 
     // eslint-disable-next-line no-plusplus

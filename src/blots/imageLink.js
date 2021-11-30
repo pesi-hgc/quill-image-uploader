@@ -10,8 +10,7 @@ class ImageLink extends InlineBlot {
       if (data && data.src) {
         const image = document.createElement('img');
         image.setAttribute('src', data.src);
-        image.setAttribute('data-imageid', data.imageId);
-        image.setAttribute('data-imagekey', data.imageKey);
+        image.setAttribute('alt', data.name);
         console.log(image);
         node.appendChild(image);
       }
@@ -19,8 +18,8 @@ class ImageLink extends InlineBlot {
       return node;
   }
   static value(domNode) {
-    const { src, imageId, imageKey } = domNode.dataset;
-    return { src, imageId, imageKey };
+    const { src, name } = domNode.dataset;
+    return { src, name };
   }
 }
 
